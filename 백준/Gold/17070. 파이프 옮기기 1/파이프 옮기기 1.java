@@ -9,50 +9,43 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
 		
-		int[][] map = new int[N][N];
+		int[][] map = new int[N+1][N+1];
+		int[][] deltas = {{0, -1}, {-1, 0}, {-1, -1}};
 		
-		int[][][] dp = new int[3][N][N];
-		// 0 : 가로, 1: 세로, 2: 대각선
-		dp[0][0][1] = 1;
-		
-		int[][][] deltas = {
-				{{0, 1}, {1, 1}},
-				{{1, 0}, {1, 1}},
-				{{0, 1}, {1, 0}, {1, 1}}
-		};
-		
-		for (int i = 0; i < N; i++) {
+		for (int i = 1; i <= N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			for (int j = 0; j < N; j++) {
+			for (int j = 1; j <= N; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
 		
-		
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				if(map[i][j] != 0) continue;
-				for (int k = 0; k < 3; k++) {
-					if(dp[k][i][j] == 0) continue;
-					for (int d = 0; d < deltas[k].length; d++) {
-						int nr = i + deltas[k][d][0];
-						int nc = j + deltas[k][d][1];
-						
-						if(nr < 0 || nr > N-1 || nc < 0 || nc > N-1 || map[nr][nc] != 0) continue;
-						int val = deltas[k][d][0] + deltas[k][d][1];
-
-						if(val == 1)
-							dp[deltas[k][d][0]][nr][nc] += dp[k][i][j];
-						else {
-							if(map[nr][j] != 0 || map[i][nc] != 0) continue;
-							dp[val][nr][nc] += dp[k][i][j];
-						}
-					}
+		int[][][] dp = new int[3][N+1][N+1];
+		dp[0][1][2] = 1;
+		boolean[] flag = new boolean[2];
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= N; j++) {
+				if(map[i][j] == 1) continue;
+				flag[0] = false;
+				flag[1] = false;
+				for (int d = 0; d < 2; d++) {  // 가로, 세로로 들어오는 경우의 수
+					int nr = i + deltas[d][0];
+					int nc = j + deltas[d][1];
+					
+					if(nr < 1 || nr > N || nc < 1 || nc > N || map[nr][nc] == 1) continue;
+					flag[d] = true;
+					dp[d][i][j] += dp[d][nr][nc] + dp[2][nr][nc];
 				}
+				// 대각선으로 들어오는 경우의 수
+				if(!flag[0] || !flag[1]) continue;
+
+				int nr = i + deltas[2][0];
+				int nc = j + deltas[2][1];
+				if(nr < 1 || nr > N || nc < 1 || nc > N || map[nr][nc] == 1) continue;
+				dp[2][i][j] += dp[0][nr][nc] + dp[1][nr][nc] + dp[2][nr][nc];
 			}
 		}
 		
-		System.out.println(dp[0][N-1][N-1] + dp[1][N-1][N-1] + dp[2][N-1][N-1]);
+		System.out.println(dp[0][N][N] + dp[1][N][N] + dp[2][N][N]);
 	}
 
 }
