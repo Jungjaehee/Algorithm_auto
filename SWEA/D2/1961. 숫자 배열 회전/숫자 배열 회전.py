@@ -1,21 +1,38 @@
-T = int(input())
-# 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
-for test_case in range(1, T + 1):
-    # ///////////////////////////////////////////////////////////////////////////////////
-    N = int(input())
-    numbers = []
-    for i in range(N):
-        numbers.append(list(input().split()))
+import java.util.Scanner;
+import java.io.FileInputStream;
 
-    print(f"#{test_case}")
-    for i in range(N):
-        num_90 = ""
-        num_180 = ""
-        num_270 = ""
-        for j in range(N):
-            num_90 += numbers[j][N-i-1]
-            num_180 += numbers[N-i-1][N-j-1]
-            num_270 += numbers[N-j-1][i]
-        print(num_270, num_180, num_90)
-
-    # ///////////////////////////////////////////////////////////////////////////////////
+class Solution
+{
+	public static void main(String args[]) throws Exception
+	{
+		
+		Scanner sc = new Scanner(System.in);
+		int T;
+		T=sc.nextInt();
+		for(int test_case = 1; test_case <= T; test_case++)
+		{
+			int N = sc.nextInt();
+			int[][] arr = new int[N][N];
+			for(int i=0;i<N;i++)
+				for(int j=0;j<N;j++)
+					arr[i][j] = sc.nextInt();
+			
+			System.out.println("#" + test_case);
+			
+			for(int i=0;i<N;i++) {
+				for(int j=0;j<N;j++) {
+					System.out.print(arr[N-1-j][i]);
+				}
+				System.out.print(" ");
+				for(int j=0;j<N;j++) {
+					System.out.print(arr[N-1-i][N-1-j]);
+				}
+				System.out.print(" ");
+				for(int j=0;j<N;j++) {
+					System.out.print(arr[j][N-1-i]);
+				}
+				System.out.println();
+			}
+		}
+	}
+}
