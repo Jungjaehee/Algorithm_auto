@@ -1,23 +1,49 @@
+import java.util.Scanner;
+import java.io.FileInputStream;
 
-T = int(input())
-# 여러개의 테스트 케이스가 주어지므로, 각각을 처리합니다.
-for test_case in range(1, T + 1):
-    N, M = map(int, input().split())
-    if N < M:
-        A = list(map(int, input().split()))
-        B = list(map(int, input().split()))
-    else:
-        B = list(map(int, input().split()))
-        A = list(map(int, input().split()))
+class Solution
+{
+	public static void main(String args[]) throws Exception
+	{
+		Scanner sc = new Scanner(System.in);
+        int T;
+        T=sc.nextInt();
+        for(int test_case = 1; test_case <= T; test_case++)
+        {
 
-    # len(A) < len(B)
+            int N = sc.nextInt();
+            int M = sc.nextInt();
 
-    max_val = 0
-    for i in range(len(B)-len(A)+1):
-        sum_val = 0
-        for j in range(len(A)):
-            sum_val += (B[i+j]*A[j])
-        # sum_val += sum(B[:i]) + sum(B[i+len(A):])
-        max_val = max(max_val, sum_val)
+            int[] ary_n = new int[N];
+            int[] ary_m = new int[M];
 
-    print(f'#{test_case} {max_val}')
+            for(int i=0;i<N;i++)
+                ary_n[i] = sc.nextInt();
+
+            for(int i=0;i<M;i++)
+                ary_m[i] = sc.nextInt();
+
+            int sum = 0, max_val = -2147483648;
+            if(N>M) {
+                for(int i=0;i<=(N-M);i++) {
+                    sum = 0;
+                    for(int j=0;j<M;j++) {
+                        sum += (ary_n[i+j]*ary_m[j]);
+                    }
+                    max_val = max_val < sum? sum:max_val;
+                }
+            }
+            else {
+                for(int i=0;i<=(M-N);i++) {
+                    sum = 0;
+                    for(int j=0;j<N;j++) {
+                        sum += (ary_n[j]*ary_m[i+j]);
+                    }
+                    max_val = max_val < sum? sum:max_val;
+                }
+            }
+
+            System.out.println("#"+test_case+" "+max_val);
+        }
+	}
+}
