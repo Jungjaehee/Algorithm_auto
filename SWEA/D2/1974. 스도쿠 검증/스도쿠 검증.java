@@ -1,53 +1,53 @@
-import java.util.Scanner;
-import java.io.FileInputStream;
-import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-class Solution
-{
-	public static void main(String args[]) throws Exception
-	{
+public class Solution {
+	/**
+	 * 스도쿠 검증
+	 * 
+	 * sum을 이용해 45인지 확인
+	 * 
+	 * @param args
+	 * @throws IOException 
+	 * @throws NumberFormatException 
+	 */
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int TC = Integer.parseInt(br.readLine());
+		StringBuilder sb = new StringBuilder();
 		
-		Scanner sc = new Scanner(System.in);
-        int T;
-        T=sc.nextInt();
-
-        for(int test_case = 1; test_case <= T; test_case++)
-        {
-            int[][] arr = new int[9][9];
-            int[] width = new int[9];
-            int[] height = new int[9];
-            int[] box = new int[9];
-
-            int res = 1;
-
-            int[] correct = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-
-            for(int i=0;i<9;i++) {
-                for(int j=0;j<9;j++)
-                    arr[i][j] = sc.nextInt();
-            }
-
-
-            for(int i=0;i<9;i++) {
-                for(int j=0;j<9;j++) {
-                    width[j] = arr[i][j];
-                    height[j] = arr[j][i];
-                    int x = ((int)(i/3))*3+(int)j/3;
-                    int y = (i%3)*3+j%3;
-                    box[j] = arr[x][y];
-                }
-
-                Arrays.sort(width);
-                Arrays.sort(height);
-                Arrays.sort(box);
-
-                if(!Arrays.equals(box, correct) || !Arrays.equals(width, correct) || !Arrays.equals(height, correct)) {
-                    res = 0;
-                    break;
-                }
-            }
-
-            System.out.println("#" + test_case + " " + res);
-        }
+		A: for (int test_case = 1; test_case <=TC; test_case++) {
+			int[][] sudok = new int[9][9];
+			sb.append("#").append(test_case).append(" ");
+			for (int i = 0; i < 9; i++) {
+				String[] str = br.readLine().split(" ");
+				for (int j = 0; j < 9; j++) {
+					sudok[i][j] = Integer.parseInt(str[j]);
+				}
+			}
+			for (int i = 0; i < 9; i++) {
+				int sum1 = 0;
+				int sum2 = 0;
+				int sum3 = 0;
+				for (int j = 0; j < 9; j++) {
+					sum1 += sudok[i][j];
+					sum2 += sudok[j][i];
+				}
+				for (int j = 0; j < 3; j++) {
+					for (int k = 0; k < 3; k++) {
+						sum3 += sudok[(j+(i/3)*3)][(k+(i%3)*3)];
+					}
+				}
+				if(sum1 != 45 || sum2 != 45 || sum3 != 45) {
+					sb.append(0).append("\n");
+					continue A;					
+				}
+			}
+			sb.append(1).append("\n");
+			
+		}
+		System.out.println(sb);
 	}
+
 }
