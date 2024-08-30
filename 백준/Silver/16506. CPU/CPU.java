@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 public class Main {
+	// 16,980KB | 160ms
+	
 	static Map<String, String> operation = new HashMap<String, String>();
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		operation.put("ADD", "0000");
@@ -29,9 +31,7 @@ public class Main {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			
 			String opcode = st.nextToken();
-			boolean isB = true;
-			if(opcode.endsWith("C"))
-				isB = false;
+			boolean isB = opcode.charAt(opcode.length()-1) == 'C'? false : true;
 			
 			sb.append(isB? operation.get(opcode)+"0" : operation.get(opcode.substring(0, opcode.length()-1))+"1");
 			sb.append(0);
