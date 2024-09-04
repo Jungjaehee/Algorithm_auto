@@ -27,7 +27,7 @@ public class Main {
 			tree[b].add(a);
 		}
 		
-		Queue<Integer> queue = new ArrayDeque<Integer>();
+		Deque<Integer> queue = new ArrayDeque<Integer>();
 		queue.offer(1);
 		int[] parents = new int[N+1];
 		while(!queue.isEmpty()) {
